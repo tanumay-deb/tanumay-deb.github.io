@@ -1,0 +1,179 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Control-plane palette. Warm paper ground, deep navy ink, emerald as the only
+   loud colour — it is the status colour of a job that completed. There is no
+   red in this system on purpose: nothing on this page faulted.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-paper: #fbfaf8;
+  --color-paper-2: #f1efe9;
+  --color-surface: #ffffff;
+  --color-ink: #101a2c;
+  --color-ink-2: #2c3a4f;
+  --color-muted: #5b6675;
+  --color-rule: #ddd9d0;
+  --color-rule-soft: #e9e6df;
+  --color-go: #046c4e;
+  --color-go-soft: #e2efe9;
+  --color-hold: #9a6608;
+  --color-hold-soft: #f7eeda;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Sections are anchor targets behind a sticky mobile bar. */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-go);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-go);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Mono breadcrumb that heads every section, e.g. "runs / migration". */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+  }
+
+  /* Hairline panel used for every card and feed row. */
+  .panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-rule);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.1875rem 0.5rem;
+    border: 1px solid currentColor;
+    color: var(--color-go);
+    background-color: var(--color-go-soft);
+    white-space: nowrap;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    color: var(--color-muted);
+    border: 1px solid var(--color-rule);
+    background-color: var(--color-paper);
+    padding: 0.125rem 0.4375rem;
+    white-space: nowrap;
+  }
+
+  .link-underline {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-rule);
+    transition: text-decoration-color 200ms ease, color 200ms ease;
+  }
+
+  .link-underline:hover {
+    color: var(--color-go);
+    text-decoration-color: var(--color-go);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion. One orchestrated moment: feed rows stream in on load the way jobs
+   land in a queue. Everything else is a quiet reveal on scroll.
+--------------------------------------------------------------------------- */
+@keyframes stream-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.stream {
+  opacity: 0;
+  animation: stream-in 620ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.live-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 620ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    transform 620ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.reveal[data-shown='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .stream,
+  .live-dot {
+    animation: none;
+    opacity: 1;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
