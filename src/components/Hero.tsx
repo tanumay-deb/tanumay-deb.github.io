@@ -20,20 +20,16 @@ const PROOF_CELL = [
 export default function Hero() {
   return (
     <section id="top" className="scroll-mt-0 pt-14 pb-20 sm:pt-20 lg:pt-24">
-      <p className="eyebrow stream" style={{ animationDelay: '40ms' }}>
-        {profile.eyebrow}
-      </p>
-
-      <h1 className="mt-5">
+      <h1>
         <span
           className="display stream block text-[2.85rem] sm:text-[4.25rem] lg:text-[5.25rem]"
-          style={{ animationDelay: '100ms' }}
+          style={{ animationDelay: '40ms' }}
         >
           {profile.name}
         </span>
         <span
           className="display stream mt-5 block text-[1.5rem] leading-[1.15] font-semibold sm:text-[2rem]"
-          style={{ animationDelay: '170ms' }}
+          style={{ animationDelay: '110ms' }}
         >
           {profile.headline[0]} {profile.headline[1]}
           <br />
@@ -41,8 +37,17 @@ export default function Hero() {
         </span>
       </h1>
 
+      {/* Sentence case, not the tracked caps of .eyebrow — at this length the
+          uppercase treatment wraps to four dense lines on a phone. */}
       <p
-        className="stream mt-7 max-w-2xl text-[1.0625rem] leading-relaxed text-ink-2"
+        className="stream mt-6 max-w-3xl font-mono text-xs leading-relaxed text-muted"
+        style={{ animationDelay: '180ms' }}
+      >
+        {profile.record}
+      </p>
+
+      <p
+        className="stream mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-ink-2"
         style={{ animationDelay: '240ms' }}
       >
         {profile.subhead}
@@ -89,9 +94,9 @@ export default function Hero() {
       {/* The run log: five completed jobs, each linking to its case study. */}
       <div className="stream mt-16" style={{ animationDelay: '450ms' }}>
         <div className="flex items-center justify-between border-b border-ink pb-2">
-          <span className="eyebrow">Completed jobs · Aug 2023 — Jun 2026</span>
+          <span className="eyebrow">Completed jobs</span>
           <span className="flex items-center gap-2 font-mono text-[0.6875rem] text-muted">
-            <span aria-hidden className="live-dot inline-block size-1.5 rounded-full bg-go" />
+            <span aria-hidden className="inline-block size-1.5 rounded-full bg-go" />
             5 of 5 successful
           </span>
         </div>

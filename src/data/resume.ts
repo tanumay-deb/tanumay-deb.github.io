@@ -21,10 +21,15 @@ export const profile = {
     'Automation engineer. Migrated 200+ enterprise automations to UiPath Cloud Orchestrator with zero business disruption, and built the CI/CD pipeline six global teams ship through.',
 
   // Hero identity block.
-  eyebrow: 'Enterprise automation · migration, delivery, sustain',
   headline: ['I move enterprise automation', 'to the cloud', 'and keep it running.'],
+
+  // Mono record line under the headline. Carries the title of record verbatim,
+  // so nothing here can be caught out against LinkedIn or the résumé it links to.
+  record:
+    'Automation engineer · PepsiCo GBS India LLP · Process Analytics and Automation Associate Analyst · Aug 2023 — Jun 2026',
+
   subhead:
-    'Three years at PepsiCo GBS India on the platform side of automation: a full-sector migration to Cloud Orchestrator, a CI/CD pipeline serving six global teams, agentic AI in live workflows, and sustain operations for everything already running.',
+    'Migration, delivery pipeline, sustain — the part of automation that starts after go-live. Three years of it: a full-sector move to Cloud Orchestrator, CI/CD delivery across six global teams, agentic AI in live workflows, and production support for everything already running.',
 
   about: [
     'Most automation work is measured at the demo. Mine is measured a year later — after the framework changed, the servers moved, the team doubled, and the process owner left. That is the part I am good at: taking an estate somebody else built, moving it somewhere better, and having nothing break while it happens.',
@@ -71,7 +76,7 @@ export const runs = [
     id: 'CICD-450',
     job: 'CI/CD delivery pipeline',
     metric: '450+',
-    metricLabel: 'deployments shipped',
+    metricLabel: 'automations deployed',
     note: 'Live across 6 global teams',
   },
   {
@@ -84,16 +89,16 @@ export const runs = [
   {
     id: 'INFRA-130',
     job: 'Bot licence optimisation',
-    metric: '$250K',
+    metric: '~$250K',
     metricLabel: 'saved annually',
     note: 'Recognised with a Smile Award',
   },
   {
     id: 'GCC-80',
-    job: 'Scale-up to a Global Capability Centre',
+    job: 'Build-to-sustain transition',
     metric: '80+',
     metricLabel: 'processes handed over',
-    note: '6 sector teams onboarded, fully documented',
+    note: 'Onboarded 6 sector teams as the group scaled into a GCC',
   },
 ]
 
@@ -101,8 +106,8 @@ export const runs = [
 export const proof = [
   { value: '200+', label: 'Automations migrated' },
   { value: '0', label: 'Business disruptions' },
-  { value: '450+', label: 'CI/CD deployments' },
-  { value: '$250K', label: 'Saved annually' },
+  { value: '450+', label: 'Automations deployed via CI/CD' },
+  { value: '~$250K', label: 'Saved annually' },
 ]
 
 /**
@@ -187,7 +192,7 @@ export const projects = [
       'Audited actual utilisation across the estate against what was provisioned, separated genuinely idle capacity from seasonal and low-frequency workloads, and decommissioned what was confirmed unused. The point was to cut cost without cutting headroom the business would need back.',
     impact: [
       { value: '130+', label: 'bot licences decommissioned' },
-      { value: '$250K', label: 'saved annually' },
+      { value: '~$250K', label: 'saved annually' },
     ],
     stack: ['UiPath Insights', 'Orchestrator', 'Capacity analysis'],
     value:
@@ -195,8 +200,8 @@ export const projects = [
   },
   {
     id: 'GCC-80',
-    title: 'Scale-up to a Global Capability Centre',
-    scope: '6 sector teams onboarded',
+    title: 'Build-to-sustain transition',
+    scope: '6 sector teams onboarded as the group scaled into a GCC',
     diagram: null,
     problem:
       'A regional RPA team was being scaled into a Global Capability Centre serving six sectors. Processes built by regional teams had to become processes a central team could support — which is a documentation and handover problem long before it is a technical one. Undocumented automation transferred between teams becomes unsupportable automation.',
