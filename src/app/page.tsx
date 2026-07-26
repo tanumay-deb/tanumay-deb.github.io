@@ -4,6 +4,7 @@ import Experience from '@/components/Experience'
 import Hero from '@/components/Hero'
 import Projects from '@/components/Projects'
 import Rail from '@/components/Rail'
+import Recognition from '@/components/Recognition'
 import Skills from '@/components/Skills'
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
           <About />
           <Projects />
           <Experience />
+          <Recognition />
           <Skills />
           <Contact />
         </div>
