@@ -173,11 +173,11 @@ function MigrationDiagram() {
       caption="Migration path — legacy on-premise framework to Cloud Orchestrator"
       label="diagram-migration"
       minWidth="min-w-[720px]"
-      desc="Before: UiPath Studio on the legacy REFramework publishes to an on-premise Orchestrator, which runs automations on Windows Server bot runners. After: Studio on the Windows-compatible framework publishes to UiPath Cloud Orchestrator, which runs them on cloud-managed runners. The cutover was sequenced by business criticality, and 200 or more automations moved with zero business disruption."
+      desc="Before: UiPath Studio on the legacy RE Framework publishes to an on-premise Orchestrator, which runs automations on Windows Server bot runners. After: Studio on the Windows-compatible framework publishes to UiPath Cloud Orchestrator, which runs them on cloud-managed runners. The cutover was sequenced by business criticality, and 200 or more automations moved with zero business disruption."
       viewBox="0 0 800 292"
     >
       <BandHeader y={10} left="Before" right="200+ automations · legacy framework, out of support" />
-      <Box x={0} y={26} w={235} h={62} title="UiPath Studio" sub="legacy REFramework" tone="faded" />
+      <Box x={0} y={26} w={235} h={62} title="UiPath Studio" sub="legacy RE Framework" tone="faded" />
       <ArrowRight from={245} to={273} y={57} />
       <Box x={283} y={26} w={234} h={62} title="On-prem Orchestrator" sub="self-hosted" tone="faded" />
       <ArrowRight from={527} to={555} y={57} />
@@ -209,7 +209,7 @@ function CicdDiagram() {
     { title: 'Git', sub: 'version + review' },
     { title: 'Azure DevOps', sub: 'build · package' },
     { title: 'Orchestrator', sub: 'dev → test → prod' },
-    { title: '6 global teams', sub: '450+ deployments' },
+    { title: '6 global teams', sub: '450+ automations' },
   ]
   const w = 140
   const gap = 25
@@ -218,10 +218,10 @@ function CicdDiagram() {
       caption="Delivery pipeline — from a developer machine to a reviewed, versioned release"
       label="diagram-cicd"
       minWidth="min-w-[760px]"
-      desc="Automations are authored in UiPath Studio, committed to Git for version history and review, built and packaged by an Azure DevOps pipeline, promoted through Orchestrator development, test and production environments, and consumed by six global teams. Over 450 deployments have shipped through this path. It replaced publishing directly from a developer machine to Orchestrator, which had no version history, no review step and no rollback point."
+      desc="Automations are authored in UiPath Studio, committed to Git for version history and review, built and packaged by an Azure DevOps pipeline, promoted through Orchestrator development, test and production environments, and consumed by six global teams. Over 450 automations have shipped through this path, and deployment time per automation fell from about thirty minutes to five. It replaced publishing directly from a developer machine to Orchestrator, which had no version history, no review step and no rollback point."
       viewBox="0 0 800 176"
     >
-      <BandHeader y={10} left="Automation delivery pipeline" right="450+ deployments · 6 teams" tone="go" />
+      <BandHeader y={10} left="Automation delivery pipeline" right="450+ automations · 30 min → 5" tone="go" />
 
       {stages.map((stage, index) => {
         const x = index * (w + gap)
@@ -245,49 +245,178 @@ function CicdDiagram() {
   )
 }
 
-function AgenticDiagram() {
+/** Four stages across the full width, evenly gapped. */
+const STAGE_W = 182
+const STAGE_X = [0, 206, 412, 618]
+
+function SamplesDiagram() {
+  const stages = [
+    { title: 'Request', sub: 'Power Apps intake' },
+    { title: 'Approval', sub: 'Power Automate' },
+    { title: 'Import / export', sub: 'documentation' },
+    { title: 'Dispatch', sub: 'and tracking' },
+  ]
   return (
     <Frame
-      caption="Agentic automation — decisioning inside a live workflow"
-      label="diagram-agentic"
-      minWidth="min-w-[760px]"
-      desc="A business trigger starts an agentic automation that decides its own next step, using Document Understanding and Azure Cognitive Services to interpret inputs. Cases the agent resolves complete autonomously and are logged to UiPath Insights. Cases it cannot resolve are raised through the existing exception path to human review, rather than being guessed at."
-      viewBox="0 0 800 214"
+      caption="R&D samples — one workflow from request to cross-border dispatch"
+      label="diagram-samples"
+      minWidth="min-w-[740px]"
+      desc="A sample request is submitted through a Power Apps intake, routed for approval by Power Automate, carried through import and export documentation, and then dispatched and tracked. UiPath performs the repetitive system entry and document handling beneath every stage. Processing time fell 70 percent, manual communication 50 percent, and request turnaround 40 percent."
+      viewBox="0 0 800 172"
     >
-      <BandHeader y={10} left="Agentic automation" right="3 running in production" tone="go" />
+      <BandHeader y={10} left="R&D sample request" right="70% faster processing" tone="go" />
 
-      <Box x={0} y={70} w={130} h={56} title="Business" sub="trigger" />
-      <ArrowRight from={134} to={164} y={98} />
+      {stages.map((stage, index) => {
+        const x = STAGE_X[index]
+        const isLast = index === stages.length - 1
+        return (
+          <g key={stage.title}>
+            <Box
+              x={x}
+              y={26}
+              w={STAGE_W}
+              h={64}
+              title={stage.title}
+              sub={stage.sub}
+              tone={isLast ? 'go' : 'default'}
+            />
+            {!isLast ? <ArrowRight from={x + STAGE_W + 4} to={x + STAGE_W + 20} y={58} /> : null}
+          </g>
+        )
+      })}
 
-      <rect x={168} y={38} width={250} height={120} fill={SURFACE} stroke={INK} strokeWidth="1" />
-      <text x={293} y={64} textAnchor="middle" fontFamily={MONO} fontSize="12.5" fill={INK}>
-        Agent
+      {/* The automation layer running beneath every stage. */}
+      {STAGE_X.map((x) => (
+        <ArrowDown key={x} x={x + STAGE_W / 2} from={90} to={112} dashed />
+      ))}
+      <rect x={0} y={114} width={800} height={38} fill={PAPER} stroke={RULE} strokeWidth="1" />
+      <text x={400} y={138} textAnchor="middle" fontFamily={MONO} fontSize="11" fill={MUTED}>
+        UiPath · system entry and document handling beneath every stage
       </text>
-      <text x={293} y={82} textAnchor="middle" fontFamily={MONO} fontSize="10.5" fill={MUTED}>
-        decides its own next step
+    </Frame>
+  )
+}
+
+function SchedulerDiagram() {
+  const stages = [
+    { title: 'New hire', sub: 'record created' },
+    { title: 'Milestones', sub: 'calculated' },
+    { title: 'Business day', sub: 'weekend + holiday' },
+    { title: 'Events created', sub: 'Outlook · SharePoint' },
+  ]
+  return (
+    <Frame
+      caption="Onboarding scheduler — milestones placed on the correct working day"
+      label="diagram-scheduler"
+      minWidth="min-w-[740px]"
+      desc="A new hire record triggers milestone calculation. Each date is adjusted for weekends and public holidays before events are created in Outlook and SharePoint. Anything that fails to schedule is surfaced as a real-time exception rather than being discovered by the new hire. Over 650 milestone events are scheduled every month, cutting manual scheduling effort by 70 percent."
+      viewBox="0 0 800 196"
+    >
+      <BandHeader y={10} left="Onboarding milestones" right="650+ events every month" tone="go" />
+
+      {stages.map((stage, index) => {
+        const x = STAGE_X[index]
+        const isLast = index === stages.length - 1
+        return (
+          <g key={stage.title}>
+            <Box
+              x={x}
+              y={26}
+              w={STAGE_W}
+              h={64}
+              title={stage.title}
+              sub={stage.sub}
+              tone={isLast ? 'go' : 'default'}
+            />
+            {!isLast ? <ArrowRight from={x + STAGE_W + 4} to={x + STAGE_W + 20} y={58} /> : null}
+          </g>
+        )
+      })}
+
+      {/* Anything that fails to schedule surfaces instead of going missing. */}
+      <ArrowDown x={STAGE_X[2] + STAGE_W / 2} from={90} to={128} dashed />
+      <ArrowDown x={STAGE_X[3] + STAGE_W / 2} from={90} to={128} dashed />
+      <Box
+        x={STAGE_X[2]}
+        y={130}
+        w={STAGE_W * 2 + 24}
+        h={46}
+        title="Exception status"
+        sub="surfaced in real time, not discovered on day one"
+      />
+    </Frame>
+  )
+}
+
+function DashboardDiagram() {
+  const sources = ['Public data feeds', 'Paid providers', 'Internal systems', 'Scheduled exports']
+  const srcW = 176
+  const srcH = 32
+  const srcY = [22, 62, 102, 142]
+  const junction = 262
+  return (
+    <Frame
+      caption="Procurement intelligence — many sources, one scheduled refresh"
+      label="diagram-dashboard"
+      minWidth="min-w-[740px]"
+      desc="More than ten public, paid and internal sources feed a scheduled orchestration that assembles over 27 recurring reports and publishes them into a single Procurement Intelligence Dashboard. The dashboard refreshes on a schedule instead of being rebuilt by hand each cycle, an 80 percent gain in reporting efficiency."
+      viewBox="0 0 800 210"
+    >
+      <BandHeader y={10} left="Macro & commodity data" right="80% gain in reporting efficiency" tone="go" />
+
+      {sources.map((source, index) => (
+        <g key={source}>
+          <rect
+            x={0}
+            y={srcY[index]}
+            width={srcW}
+            height={srcH}
+            fill={SURFACE}
+            stroke={RULE}
+            strokeWidth="1"
+          />
+          <text
+            x={srcW / 2}
+            y={srcY[index] + srcH / 2 + 4}
+            textAnchor="middle"
+            fontFamily={MONO}
+            fontSize="11"
+            fill={INK}
+          >
+            {source}
+          </text>
+          {/* Fan in to a single junction before the orchestration box. */}
+          <polyline
+            points={`${srcW},${srcY[index] + srcH / 2} ${junction},${srcY[index] + srcH / 2} ${junction},108`}
+            fill="none"
+            stroke={RULE}
+            strokeWidth="1"
+          />
+        </g>
+      ))}
+      <text x={0} y={192} fontFamily={MONO} fontSize="10.5" fill={MUTED}>
+        10+ public and paid sources in total
       </text>
-      <line x1={188} y1={100} x2={398} y2={100} stroke={RULE} strokeWidth="1" />
-      <text x={293} y={120} textAnchor="middle" fontFamily={MONO} fontSize="10.5" fill={MUTED}>
-        Document Understanding
-      </text>
-      <text x={293} y={138} textAnchor="middle" fontFamily={MONO} fontSize="10.5" fill={MUTED}>
-        Azure Cognitive Services
-      </text>
 
-      {/* Split: resolved above, exception below. */}
-      <line x1={418} y1={98} x2={442} y2={98} stroke={RULE} strokeWidth="1" />
-      <line x1={442} y1={50} x2={442} y2={154} stroke={RULE} strokeWidth="1" />
-      <ArrowRight from={442} to={466} y={50} />
-      <ArrowRight from={442} to={466} y={154} />
-
-      <Box x={470} y={24} w={150} h={52} title="Resolved" sub="no human needed" />
-      <Box x={470} y={128} w={150} h={52} title="Exception" sub="ambiguous case" />
-
-      <ArrowRight from={624} to={654} y={50} />
-      <ArrowRight from={624} to={654} y={154} />
-
-      <Box x={658} y={24} w={142} h={52} title="Completed" sub="logged to Insights" tone="go" />
-      <Box x={658} y={128} w={142} h={52} title="Human review" sub="existing path" />
+      <ArrowRight from={junction} to={296} y={108} />
+      <Box
+        x={300}
+        y={76}
+        w={196}
+        h={64}
+        title="Orchestration"
+        sub="27+ recurring reports"
+      />
+      <ArrowRight from={500} to={532} y={108} />
+      <Box
+        x={536}
+        y={76}
+        w={264}
+        h={64}
+        title="Procurement Intelligence"
+        sub="one dashboard, refreshed on schedule"
+        tone="go"
+      />
     </Frame>
   )
 }
@@ -295,6 +424,8 @@ function AgenticDiagram() {
 export default function Diagram({ kind }: { kind: string }) {
   if (kind === 'migration') return <MigrationDiagram />
   if (kind === 'cicd') return <CicdDiagram />
-  if (kind === 'agentic') return <AgenticDiagram />
+  if (kind === 'samples') return <SamplesDiagram />
+  if (kind === 'scheduler') return <SchedulerDiagram />
+  if (kind === 'dashboard') return <DashboardDiagram />
   return null
 }
