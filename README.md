@@ -40,6 +40,21 @@ env:
 
 **If you attach a custom domain**, keep the empty base path and add a `CNAME` file containing the domain to `public/`.
 
+## Analytics
+
+Off by default. Two providers are supported, independently — set either, both, or neither. With neither configured the site ships with no tracking script at all.
+
+Configure through repository variables (**Settings → Secrets and variables → Actions → Variables**), then re-run the deploy:
+
+| Variable | Provider | Notes |
+| --- | --- | --- |
+| `UMAMI_WEBSITE_ID` | [Umami](https://umami.is) | Cookieless. No consent banner needed. Get the ID from **Add website** in the Umami dashboard. |
+| `GA_MEASUREMENT_ID` | Google Analytics 4 | `G-XXXXXXXXXX`. Sets cookies, so EU visitors need a consent banner that this site does not currently have. |
+
+Résumé downloads are tracked as an event by both without extra code — Umami via the `data-umami-event` attribute on the download link, GA4 via its built-in file download tracking. That is the signal worth watching: a download means someone read far enough to want the PDF.
+
+To run analytics locally, put the same values in `.env.local` as `NEXT_PUBLIC_UMAMI_ID` / `NEXT_PUBLIC_GA_ID`.
+
 ## Structure
 
 ```

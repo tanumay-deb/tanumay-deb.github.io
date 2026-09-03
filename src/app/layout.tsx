@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google'
+import Analytics from '@/components/Analytics'
 import { profile } from '@/data/resume'
 import './globals.css'
 
@@ -36,7 +37,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${bricolage.variable} ${plexSans.variable} ${plexMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }

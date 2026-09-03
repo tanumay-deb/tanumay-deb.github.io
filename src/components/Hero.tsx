@@ -76,6 +76,9 @@ export default function Hero() {
         <a
           href={asset(profile.resume)}
           download
+          // Umami records this click as a named event; a résumé download is a
+          // stronger signal than a pageview for a portfolio like this one.
+          data-umami-event="resume-download"
           className="border border-rule px-3.5 py-2 transition-colors hover:border-go hover:text-go"
         >
           Download résumé (PDF)

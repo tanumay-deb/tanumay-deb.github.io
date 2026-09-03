@@ -34,6 +34,11 @@ jobs:
         # NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
         env:
           NEXT_PUBLIC_BASE_PATH: ''
+          # Both optional and independent. Set either as a repository variable
+          # under Settings > Secrets and variables > Actions > Variables. With
+          # neither set the site builds with no tracking at all.
+          NEXT_PUBLIC_UMAMI_ID: ${{ vars.UMAMI_WEBSITE_ID }}
+          NEXT_PUBLIC_GA_ID: ${{ vars.GA_MEASUREMENT_ID }}
         run: npm run build
 
       - uses: actions/configure-pages@v5
