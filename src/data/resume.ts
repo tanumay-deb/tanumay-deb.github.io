@@ -291,7 +291,7 @@ export const experience = {
     {
       area: 'Sustain & governance',
       summary:
-        'Runs monitoring, incident resolution and break-fix for live automation products on UiPath Insights, decommissioned 130+ idle licences for $250K in annual savings, and standardised how the team documents and investigates — four ServiceNow Knowledge Base articles and the org-wide RCA template.',
+        'Owns monitoring, incident resolution and break-fix for live automation products on UiPath Insights. Decommissioned 130+ idle licences for $250K in annual savings, and standardised how the team documents and investigates — four ServiceNow Knowledge Base articles and the org-wide RCA template.',
       link: 'SUSTAIN',
     },
   ],
