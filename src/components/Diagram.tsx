@@ -421,11 +421,79 @@ function DashboardDiagram() {
   )
 }
 
+function PipelineDiagram() {
+  const stages = [
+    { title: 'Gmail', sub: 'IMAP fetch, dedupe' },
+    { title: 'Decrypt + parse', sub: 'HDFC · ICICI · SBI' },
+    { title: 'Reconcile', sub: 'vs printed totals' },
+    { title: 'Categorise', sub: 'spend engine' },
+    { title: 'Power BI', sub: '5 pages, 21 measures' },
+  ]
+  const daily = [
+    { title: 'Task Scheduler', sub: 'daily, unattended' },
+    { title: 'Refresh', sub: 'via UI Automation' },
+    { title: 'Alert email', sub: 'each item told once' },
+    { title: 'Backups', sub: 'OneDrive + disk' },
+  ]
+  const w = 140
+  const gap = 25
+  const dW = 185
+  const dGap = 20
+  return (
+    <Frame
+      caption="Statement pipeline — encrypted PDF in, refreshed dashboard out"
+      label="diagram-pipeline"
+      minWidth="min-w-[760px]"
+      desc="Statements are fetched from Gmail over IMAP, deduplicated and routed to the right card, then decrypted and read by a parser per bank for HDFC, ICICI and SBI. Every statement is reconciled against the bank's printed totals before a spend engine categorises it, and the results feed a five-page Power BI dashboard. A Windows scheduled job runs the whole chain daily, refreshes Power BI Desktop through UI Automation, sends an alert email, and writes incremental backups. Passwords live in Windows Credential Manager."
+      viewBox="0 0 800 212"
+    >
+      <BandHeader y={10} left="Pipeline" right="64 of 64 statements reconciled" tone="go" />
+
+      {stages.map((stage, index) => {
+        const x = index * (w + gap)
+        const isLast = index === stages.length - 1
+        return (
+          <g key={stage.title}>
+            <Box
+              x={x}
+              y={26}
+              w={w}
+              h={70}
+              title={stage.title}
+              sub={stage.sub}
+              tone={isLast ? 'go' : 'default'}
+            />
+            {!isLast ? <ArrowRight from={x + w + 4} to={x + w + gap - 4} y={61} /> : null}
+          </g>
+        )
+      })}
+
+      <line x1={0} y1={124} x2={800} y2={124} stroke={RULE} strokeWidth="1" />
+      <text x={0} y={146} fontFamily={MONO} fontSize="10.5" letterSpacing="1.4" fill={MUTED}>
+        RUNS ITSELF
+      </text>
+
+      {daily.map((item, index) => (
+        <Box
+          key={item.title}
+          x={index * (dW + dGap)}
+          y={158}
+          w={dW}
+          h={44}
+          title={item.title}
+          sub={item.sub}
+        />
+      ))}
+    </Frame>
+  )
+}
+
 export default function Diagram({ kind }: { kind: string }) {
   if (kind === 'migration') return <MigrationDiagram />
   if (kind === 'cicd') return <CicdDiagram />
   if (kind === 'samples') return <SamplesDiagram />
   if (kind === 'scheduler') return <SchedulerDiagram />
   if (kind === 'dashboard') return <DashboardDiagram />
+  if (kind === 'pipeline') return <PipelineDiagram />
   return null
 }

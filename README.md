@@ -23,6 +23,8 @@ All copy lives in [`src/data/resume.ts`](src/data/resume.ts) — profile, hero r
 
 `public/resume.pdf` is the downloadable résumé. Replace the file to update the link.
 
+The side project section reads from the `sideProject` export in the same file. Its dashboard screenshots live in `public/images/ccsi/` and are copies of the demo-data captures in the project's own repository; replace them there to update them here.
+
 ## Deploying to GitHub Pages
 
 1. Create the repo and push to `main`.

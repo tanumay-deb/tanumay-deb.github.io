@@ -365,10 +365,156 @@ export const certifications = [
   { title: 'Azure Fundamentals', issuer: 'Microsoft', code: 'AZ-900' },
 ]
 
+/**
+ * Built outside work. Carries the engineering evidence the RPA work cannot —
+ * Python at volume, a test suite, CI, and a public repository anyone can run.
+ * Source of truth: the project brief. Screenshots use the repo's demo data,
+ * so their figures differ from the real ones quoted here, which is why the
+ * gallery says so.
+ */
+export const sideProject = {
+  id: 'ccsi',
+  eyebrow: 'Personal project · solo',
+  title: 'Credit Card Spend Intelligence',
+  oneLiner:
+    'An automated pipeline that turns password-protected credit card statement PDFs from three Indian banks into a self-updating Power BI dashboard, with daily alert emails and no manual steps.',
+  repo: 'https://github.com/tanumay-deb/credit-card-spend-intelligence',
+
+  problem:
+    'Seven credit cards across HDFC, ICICI and SBI, and every statement arrives as an encrypted PDF in a different layout. Power BI cannot open a password-protected PDF at all, and no app shows all seven cards in one place — so spending, dues, EMIs and credit utilisation sat scattered across dozens of PDFs in an inbox, each bank in its own format.',
+  approach:
+    'A daily job pulls statements from Gmail over IMAP, routes each PDF to the right card, skips anything it already has, and decrypts it. A parser per bank reads the layout, and every statement is reconciled to the paisa against the bank’s own printed totals. A spend engine then resolves what the numbers actually mean: a refund is matched to the purchase it cancels, an EMI conversion nets to zero, and a bounced autopay is not counted as spend. The results feed a five-page Power BI dashboard, and the same job refreshes it, backs up the data, and emails a summary of dues, spending and anything that needs attention.',
+
+  metrics: [
+    { value: '7', label: 'cards across 3 banks' },
+    { value: '64', label: 'statements, every one reconciled to the printed totals' },
+    { value: '1,150+', label: 'transactions parsed' },
+    { value: '100%', label: 'of spend categorised, up from 52%' },
+    { value: '390', label: 'automated tests, with ruff and mypy' },
+    { value: '~5,200', label: 'lines of Python' },
+  ],
+
+  /** The "challenges" section — where the actual engineering shows. */
+  stories: [
+    {
+      title: 'Reconciliation as the test oracle',
+      body: 'PDF text extraction fails silently: a dropped line simply disappears, and nothing errors. So every statement’s parsed debits are checked against the bank’s own printed totals. That caught a header wrapped over two lines, EMI columns read in the wrong order, and noise introduced when the test fixtures were redacted.',
+    },
+    {
+      title: 'Refreshing Power BI Desktop the supported way',
+      body: 'Microsoft does not support sending refresh commands to a model open in Desktop. So the job presses Desktop’s own Refresh button through Windows UI Automation, then confirms it worked with a read-only query on the model’s refresh time.',
+    },
+    {
+      title: 'Spend that matches the bill',
+      body: 'Refunds are matched to the purchases they cancel — same card, exact amount, within 90 days, nearest first. EMI conversions net out and bounced autopays are excluded. The result is a dashboard total that matches what the banks actually billed.',
+    },
+    {
+      title: 'Calendar month versus statement month',
+      body: 'A statement runs across two calendar months, so an ordinary date table splits one bill’s purchases in two. Each transaction now carries the date of the statement that billed it, and a second month table is keyed from both the statements and the transactions — so one filter shows a month’s bills together with exactly the purchases on them.',
+    },
+  ],
+
+  /** Worth stating plainly: this repository handles real financial documents. */
+  security: [
+    'Passwords are kept in Windows Credential Manager.',
+    'A pre-commit guard blocks statements, outputs, stored passwords and Luhn-valid card numbers from ever reaching git.',
+    'The public repository is a showcase copy of the private working one, with sample config and made-up demo data.',
+  ],
+
+  /** The highlights the problem and approach paragraphs do not already carry. */
+  details: [
+    {
+      label: 'Categorisation',
+      body: 'A merchant map first, then keyword rules in priority order, then a UPI fallback. A merchant it has not seen goes to a review queue.',
+    },
+    {
+      label: 'Dashboard',
+      body: 'Five pages and 21 DAX measures, in the Indian number format (lakhs). Credit limits pooled across cards, EMI principal against interest derived with annuity and present-value maths, and four filters shared by every page.',
+    },
+    {
+      label: 'Engineering',
+      body: '390 automated tests with ruff and mypy, locked dependency versions, GitHub Actions CI running on Windows, and a design document and implementation plan for each feature.',
+    },
+    {
+      label: 'Scope',
+      body: 'Solo: design, parsing, data model, DAX, automation, testing and CI.',
+    },
+  ],
+
+  /** The example of the daily email from the project README. Its numbers are illustrative. */
+  alertEmail: {
+    subject: 'Credit cards: 1 new statement, 1 needs attention',
+    body: `New statements
+- SBI Elite: September statement imported (15 Aug to 14 Sep).
+  Total due ₹18,420, minimum ₹920, due 4 Oct 2026 (in 8 days).
+  Spent ₹17,960 in 42 transactions: Quick Commerce ₹4,210 (23%), EMI ₹3,500 (19%),
+  Restaurants ₹2,980 (17%).
+
+Power BI was open and has been refreshed.
+
+Needs attention
+- HDFC Millennia: no October statement yet (expected around 18 Oct).
+  Look for it in Gmail. If this card is billed only in months you use it, set
+  monthly=no for it in config/cards.csv.`,
+  },
+
+  /** Runs with no statements at all, on the demo data. */
+  tryIt: ['cards demo', 'cards dashboard --demo'],
+
+  stack: [
+    'Python 3.11',
+    'pandas',
+    'pypdf',
+    'pdfplumber',
+    'Power BI',
+    'DAX',
+    'TMDL/PBIR',
+    'PowerShell',
+    'Windows Task Scheduler',
+    'UI Automation',
+    'IMAP/SMTP',
+    'keyring',
+    'pytest',
+    'ruff',
+    'mypy',
+    'GitHub Actions',
+  ],
+
+  hero: {
+    src: '/images/ccsi/overview.png',
+    alt: 'Power BI overview page showing total spend, outstanding balance, minimum due, credit limit, utilisation and transaction count, with monthly spend, spend by category, spend by card, top merchants and recent transactions.',
+  },
+  gallery: [
+    {
+      src: '/images/ccsi/spending-analysis.png',
+      alt: 'Power BI spending analysis page: spend by subcategory, a category trend over twelve months, weekday against weekend, spend by transaction type and by issuer, with interest, fees and cashback totals.',
+      caption: 'Spending analysis — subcategories, category trend, fees and cashback',
+    },
+    {
+      src: '/images/ccsi/cards-bills.png',
+      alt: 'Power BI cards and bills page: outstanding balance, minimum due, credit limit, available credit and utilisation for each card, plus a table of statements with their due dates.',
+      caption: 'Cards and bills — limits and dues per card; a limit two cards share is counted once',
+    },
+    {
+      src: '/images/ccsi/emi.png',
+      alt: 'Power BI EMI page: every running EMI plan with principal, months left, instalment amount, interest payable and outstanding balance.',
+      caption: 'EMI — running plans, with principal against interest still to pay',
+    },
+    {
+      src: '/images/ccsi/transactions.png',
+      alt: 'Power BI transactions page: every transaction with card, merchant, category, type and amount, with refund and credit rows highlighted.',
+      caption: 'Transactions — the full ledger, with refunds and credits highlighted',
+    },
+  ],
+  galleryNote:
+    'Every screenshot uses the repository’s made-up demo data, so the figures on them are not the real ones quoted above.',
+}
+
 export const sections = [
   { id: 'top', label: 'Overview' },
   { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
+  { id: 'project', label: 'Side project' },
   { id: 'experience', label: 'Experience' },
   { id: 'recognition', label: 'Recognition' },
   { id: 'skills', label: 'Skills' },

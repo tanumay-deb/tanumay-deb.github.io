@@ -5,6 +5,7 @@ import Hero from '@/components/Hero'
 import Projects from '@/components/Projects'
 import Rail from '@/components/Rail'
 import Recognition from '@/components/Recognition'
+import SideProject from '@/components/SideProject'
 import Skills from '@/components/Skills'
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
           <Hero />
           <About />
           <Projects />
+          <SideProject />
           <Experience />
           <Recognition />
           <Skills />
